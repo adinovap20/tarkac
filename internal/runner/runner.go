@@ -1,4 +1,4 @@
-// runner contains functions for running the compiler pipeline for compiling tarka source code
+// Package runner contains functions for running the compiler pipeline for compiling tarka source code
 package runner
 
 import (
@@ -42,7 +42,7 @@ func Run() {
 	runLexicalAnalysis(cmdLineFlags)
 }
 
-// function to run lexical analysis phase of the tarka compiler
+// runLexicalAnalysis runs the lexical analysis phase of the compiler pipeline
 func runLexicalAnalysis(flags *Flags) {
 	content, err := os.ReadFile(*flags.inputFile)
 	if err != nil {

@@ -1,4 +1,4 @@
-// utils package contains all the utility functions related to tarka compiler
+// Package utils contains all the utility functions related to tarka compiler
 package utils
 
 // IsLetter returns true if the current character is alphabet or '_'

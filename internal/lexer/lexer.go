@@ -1,4 +1,4 @@
-// lexer package contains the tarka lexer
+// Package lexer contains the tarka lexer
 package lexer
 
 import (
@@ -16,7 +16,7 @@ type Lexer struct {
 	col     int    // Column number of the character pointed by current pointer
 }
 
-// Creates a new instance of Lexer and returns it
+// NewLexer creates a new instance of Lexer and returns it
 func NewLexer(code string) *Lexer {
 	lexer := &Lexer{
 		code:    code,

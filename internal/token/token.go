@@ -1,4 +1,4 @@
-// token package contains all the information related to tarka tokens
+// Package token contains all the information related to tarka tokens
 package token
 
 import (
@@ -10,29 +10,29 @@ import (
 type TokenType string
 
 const (
-	KW_EXIT = "KW_EXIT" // exit keyword
+	KW_EXIT = "KW_EXIT" // KW_EXIT is token type for the 'exit' keyword
 
-	LIT_INT   = "LIT_INT"   // integer literal, e.g., 10, 302, etc.
-	LIT_IDENT = "LIT_IDENT" // identifier literal, e.g., a, b, etc.
+	LIT_INT   = "LIT_INT"   // LIT_INT is token type for the integer literal, e.g., 10, 302, etc.
+	LIT_IDENT = "LIT_IDENT" // LIT_IDENT is token type for the identifier literal, e.g., a, b, etc.
 
-	EX_UNKNOWN = "EX_UNKNOWN" // unknown token
-	EX_NEWLINE = "EX_NEWLINE" // newline token
+	EX_UNKNOWN = "EX_UNKNOWN" // EX_UNKNOWN is the token type for unknown token
+	EX_NEWLINE = "EX_NEWLINE" // EX_NEWLINE is the token type for newline token
 )
 
-// token structure
+// Token structure
 type Token struct {
-	Type TokenType // type of the token
-	Lit  string    // token literal
-	Line int       // line number where token begins
-	Col  int       // column number where token begins
+	Type TokenType // Type stores the type of the token
+	Lit  string    // Lit stores the literal associated with the token
+	Line int       // Line stores the line number associated with the beginning of the token
+	Col  int       // Col stores the column number associated with the beginning of the token
 }
 
-// keywords map that stores keyword literals and their corresponding keyword token type
+// KEYWORDS map stores keyword literals and their corresponding keyword token type
 var KEYWORDS = map[string]TokenType{
 	"exit": KW_EXIT,
 }
 
-// function to lookup identifier in the KEYWORDS map and return the corresponding token type.
+// LookupIdent looks up identifier in the KEYWORDS map and return the corresponding token type.
 // This returns LIT_IDENT token type if the provided identifier literal is not a keyword.
 func LookupIdent(ident string) TokenType {
 	if tokType, ok := KEYWORDS[ident]; ok {
@@ -41,7 +41,7 @@ func LookupIdent(ident string) TokenType {
 	return LIT_IDENT
 }
 
-// function to print tokens in a nice way
+// PrintTokens prints the tokens in a nice way
 func PrintTokens(tokens []Token) {
 	for i, tok := range tokens {
 		lit := strings.ReplaceAll(tok.Lit, "\n", "\\n")
