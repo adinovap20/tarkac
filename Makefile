@@ -9,3 +9,6 @@ r:
 # Basically, to view docs in an HTML view
 d:
 	~/go/bin/pkgsite
+
+t:
+	go test ./internal/lexer
