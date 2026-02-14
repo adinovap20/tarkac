@@ -1,15 +1,17 @@
-# Lexical Analysis Phase
+# Grammar
+
+## Lexical Analysis Phase
 
 $$
 \begin{aligned}
 \text{KW\_EXIT} &\to \text{exit} \\[2ex]
 \text{LIT\_INT} &\to [1-9][0-9]* \\
-\text{LIT\_IDENT}  &\to [a-zA-Z\_][a-zA-Z0-9\_]* \\[2ex]
+\text{LIT\_IDENT}  &\to \text{[a-zA-Z\_][a-zA-Z0-9\_]*} \\[2ex]
 \text{EX\_NEWLINE} &\to \backslash n
 \end{aligned}
 $$
 
-# Syntax Grammar
+## Syntax Grammar
 
 $$
 \begin{aligned}
