@@ -2,23 +2,23 @@
 
 ## Lexical Analysis Phase
 
-$$
-\begin{aligned}
-\text{KW\_EXIT} &\to \text{exit} \\[2ex]
-\text{LIT\_INT} &\to [1-9][0-9]* \\
-\text{LIT\_IDENT}  &\to \text{[a-zA-Z\_][a-zA-Z0-9\_]*} \\[2ex]
-\text{EX\_NEWLINE} &\to \backslash n
-\end{aligned}
-$$
+```ebnf
+KW_EXIT    -> "exit"
+
+LIT_INT    -> [1-9][0-9]*
+LIT_IDENT  -> [a-zA-Z_][a-zA-Z0-9_]*
+
+EX_NEWLINE -> "\n"
+```
 
 ## Syntax Grammar
 
-$$
-\begin{aligned}
-\text{Program} &\to [\text{Statement}]^* \\[2ex]
-\text{Statement} &\to \text{StmtExit} \\
-\text{StmtExit} &\to \text{KW\_EXIT} \quad \text{Expression} \quad \text{EX\_NEWLINE} \\[2ex]
-\text{Expression} &\to \text{ExprIntLit} \\
-\text{ExprIntLit} &\to \text{LIT\_INT} \\
-\end{aligned}
-$$
+```ebnf
+Program     -> Statement*
+
+Statement   -> StmtExit
+StmtExit    -> KW_EXIT Expression EX_NEWLINE
+
+Expression  -> ExprIntLit
+ExprIntLit  -> LIT_INT
+```
