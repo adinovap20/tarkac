@@ -17,8 +17,8 @@ $$
 \begin{aligned}
 \text{Program} &\to [\text{Statement}]^* \\[2ex]
 \text{Statement} &\to \text{StmtExit} \\
-\text{StmtExit} &\to \textit{KW\_EXIT} \quad \text{Expression} \quad \textit{EX\_NEWLINE} \\[2ex]
+\text{StmtExit} &\to \text{KW\_EXIT} \quad \text{Expression} \quad \text{EX\_NEWLINE} \\[2ex]
 \text{Expression} &\to \text{ExprIntLit} \\
-\text{ExprIntLit} &\to \textit{LIT\_INT} \\
+\text{ExprIntLit} &\to \text{LIT\_INT} \\
 \end{aligned}
 $$
