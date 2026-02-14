@@ -12,3 +12,4 @@ d:
 
 t:
 	go test ./internal/lexer
+	go test ./internal/parser

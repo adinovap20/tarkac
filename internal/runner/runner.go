@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/adinovap20/tarkac/internal/lexer"
+	"github.com/adinovap20/tarkac/internal/parser"
 	"github.com/adinovap20/tarkac/internal/token"
 )
 
@@ -39,11 +40,15 @@ func Run() {
 	}
 
 	// Run lexical analysis phas
-	runLexicalAnalysis(cmdLineFlags)
+	toks := runLexicalAnalysis(cmdLineFlags)
+	runSyntaxAnalysis(cmdLineFlags, toks)
 }
 
 // runLexicalAnalysis runs the lexical analysis phase of the compiler pipeline
-func runLexicalAnalysis(flags *Flags) {
+func runLexicalAnalysis(flags *Flags) []token.Token {
+	if *flags.debugFlag {
+		fmt.Println("=== Lexical Analysis ===")
+	}
 	content, err := os.ReadFile(*flags.inputFile)
 	if err != nil {
 		log.Fatal(err)
@@ -52,8 +57,25 @@ func runLexicalAnalysis(flags *Flags) {
 	lexer := lexer.NewLexer(code)
 	tokens := lexer.GetTokens()
 	if *flags.debugFlag {
-		fmt.Println("=== Lexical Analysis ===")
 		token.PrintTokens(tokens)
 		fmt.Println("Lexical analysis successful...")
+	}
+	return tokens
+}
+
+// runSyntaxAnalysis runs the syntax analysis phase of the compiler pipeline
+func runSyntaxAnalysis(flags *Flags, tokens []token.Token) {
+	if *flags.debugFlag {
+		fmt.Println("=== Syntax Analysis ===")
+	}
+	parser := parser.NewParser(tokens)
+	program := parser.Parse()
+	if program == nil {
+		log.Fatal("Syntax analysis failed... Parser returned <nil> abstract syntax tree!")
+	}
+	parser.PrintErrors()
+	if *flags.debugFlag {
+		program.Print(0)
+		fmt.Println("Syntax analysis successful...")
 	}
 }
