@@ -17,8 +17,8 @@ func (p *Parser) parseStatement() ast.Statement {
 
 // parseStmtExit parses the exit statement and returns the StmtExit node
 func (p *Parser) parseStmtExit() *ast.StmtExit {
-	p.nextToken() // exit keyword parsed
 	line, col := p.curToken.Line, p.curToken.Col
+	p.nextToken() // exit keyword parsed
 	expr := p.parseExpression()
 	if expr == nil {
 		p.newError("Invalid expression after exit statement", line, col)
