@@ -8,7 +8,6 @@ type ExprIntLit struct {
 }
 
 func (e *ExprIntLit) exprNode() {}
-func (e *ExprIntLit) Print(depth int) {
-	PrintIndentation(depth)
-	println("ExprIntLit: ", e.Val)
+func (e *ExprIntLit) Accept(v Visitor) {
+	v.VisitExprIntLit(e)
 }

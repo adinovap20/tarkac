@@ -8,12 +8,6 @@ type StmtExit struct {
 }
 
 func (s *StmtExit) stmtNode() {}
-func (s *StmtExit) Print(depth int) {
-	PrintIndentation(depth)
-	println("StmtExit:")
-	if s.Expr != nil {
-		s.Expr.Print(depth + 1)
-	} else {
-		PrintNilIndentation(depth + 1)
-	}
+func (s *StmtExit) Accept(v Visitor) {
+	v.VisitStmtExit(s)
 }
