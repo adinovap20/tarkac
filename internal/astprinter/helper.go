@@ -1,4 +1,4 @@
-package ast
+package astprinter
 
 // PrintIndentation prints the indentation based on the given depth
 func PrintIndentation(depth int) {

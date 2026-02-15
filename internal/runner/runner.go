@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/adinovap20/tarkac/internal/astprinter"
 	"github.com/adinovap20/tarkac/internal/lexer"
 	"github.com/adinovap20/tarkac/internal/parser"
 	"github.com/adinovap20/tarkac/internal/token"
@@ -75,7 +76,8 @@ func runSyntaxAnalysis(flags *Flags, tokens []token.Token) {
 	}
 	parser.PrintErrors()
 	if *flags.debugFlag {
-		program.Print(0)
+		printer := astprinter.NewASTPrinter()
+		program.Accept(printer)
 		fmt.Println("Syntax analysis successful...")
 	}
 }

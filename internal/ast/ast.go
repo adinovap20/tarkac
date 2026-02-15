@@ -3,7 +3,7 @@ package ast
 
 // Node is the base interface for all tree elements
 type Node interface {
-	Print(depth int) // Print prints the current Node
+	Accept(v Visitor) // Accept method for visitor traversal
 }
 
 // Expression is the base interface for all expression nodes
