@@ -7,9 +7,11 @@ import (
 	"log"
 	"os"
 
+	"github.com/adinovap20/tarkac/internal/ast"
 	"github.com/adinovap20/tarkac/internal/astprinter"
 	"github.com/adinovap20/tarkac/internal/lexer"
 	"github.com/adinovap20/tarkac/internal/parser"
+	"github.com/adinovap20/tarkac/internal/semantic"
 	"github.com/adinovap20/tarkac/internal/token"
 )
 
@@ -42,7 +44,8 @@ func Run() {
 
 	// Run lexical analysis phas
 	toks := runLexicalAnalysis(cmdLineFlags)
-	runSyntaxAnalysis(cmdLineFlags, toks)
+	program := runSyntaxAnalysis(cmdLineFlags, toks)
+	runSemanticAnalysis(cmdLineFlags, program)
 }
 
 // runLexicalAnalysis runs the lexical analysis phase of the compiler pipeline
@@ -65,7 +68,7 @@ func runLexicalAnalysis(flags *Flags) []token.Token {
 }
 
 // runSyntaxAnalysis runs the syntax analysis phase of the compiler pipeline
-func runSyntaxAnalysis(flags *Flags, tokens []token.Token) {
+func runSyntaxAnalysis(flags *Flags, tokens []token.Token) *ast.Program {
 	if *flags.debugFlag {
 		fmt.Println("=== Syntax Analysis ===")
 	}
@@ -79,5 +82,19 @@ func runSyntaxAnalysis(flags *Flags, tokens []token.Token) {
 		printer := astprinter.NewASTPrinter()
 		program.Accept(printer)
 		fmt.Println("Syntax analysis successful...")
+	}
+	return program
+}
+
+// runSemanticAnalysis runs the semantic analysis phase of the compiler pipeline
+func runSemanticAnalysis(flags *Flags, program *ast.Program) {
+	if *flags.debugFlag {
+		fmt.Println("=== Semantic Analysis ===")
+	}
+	analyzer := semantic.NewSemanticAnalyzer()
+	program.Accept(analyzer)
+	analyzer.PrintErrors()
+	if *flags.debugFlag {
+		fmt.Println("Semantic analysis successful...")
 	}
 }
