@@ -9,6 +9,7 @@ import (
 
 	"github.com/adinovap20/tarkac/internal/ast"
 	"github.com/adinovap20/tarkac/internal/astprinter"
+	"github.com/adinovap20/tarkac/internal/irgen"
 	"github.com/adinovap20/tarkac/internal/lexer"
 	"github.com/adinovap20/tarkac/internal/parser"
 	"github.com/adinovap20/tarkac/internal/semantic"
@@ -46,6 +47,7 @@ func Run() {
 	toks := runLexicalAnalysis(cmdLineFlags)
 	program := runSyntaxAnalysis(cmdLineFlags, toks)
 	runSemanticAnalysis(cmdLineFlags, program)
+	runIRGeneration(cmdLineFlags, program)
 }
 
 // runLexicalAnalysis runs the lexical analysis phase of the compiler pipeline
@@ -96,5 +98,18 @@ func runSemanticAnalysis(flags *Flags, program *ast.Program) {
 	analyzer.PrintErrors()
 	if *flags.debugFlag {
 		fmt.Println("Semantic analysis successful...")
+	}
+}
+
+// runIRGeneration runs the IR Generation phase of the compiler pipeline
+func runIRGeneration(flags *Flags, program *ast.Program) {
+	if *flags.debugFlag {
+		fmt.Println("=== IR Generation ===")
+	}
+	irGenerator := irgen.NewIRGenerator()
+	program.Accept(irGenerator)
+	if *flags.debugFlag {
+		irGenerator.Print()
+		fmt.Println("IR generation successful...")
 	}
 }
