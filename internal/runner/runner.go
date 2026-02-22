@@ -6,9 +6,12 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 
+	"github.com/adinovap20/tarkac/internal/asmgen/lnx64"
 	"github.com/adinovap20/tarkac/internal/ast"
 	"github.com/adinovap20/tarkac/internal/astprinter"
+	"github.com/adinovap20/tarkac/internal/ir"
 	"github.com/adinovap20/tarkac/internal/irgen"
 	"github.com/adinovap20/tarkac/internal/lexer"
 	"github.com/adinovap20/tarkac/internal/parser"
@@ -21,6 +24,7 @@ type Flags struct {
 	inputFile  *string // Pointer to the path of the string input file path
 	outputFile *string // Pointer to the path of the string output file path
 	debugFlag  *bool   // Pointer to the debug flag
+	fasmFile   *string // Pointer to the path of the string output file path
 }
 
 // Run runs the compiler pipeline according to the command line options
@@ -28,7 +32,9 @@ func Run() {
 	// Parse the command line arguments
 	outputFile := flag.String("o", "out", "Output file path")
 	debug := flag.Bool("d", false, "Enable debug mode prints")
+	fasmFile := flag.String("f", "out.asm", "Fasm file path")
 	flag.Parse()
+	fmt.Println(*fasmFile)
 	args := flag.Args()
 	if len(args) < 1 {
 		fmt.Printf("Usage: tarkac <input_file> [options]\n")
@@ -36,7 +42,7 @@ func Run() {
 		os.Exit(1)
 	}
 	inputFile := args[0]
-	cmdLineFlags := &Flags{inputFile: &inputFile, outputFile: outputFile, debugFlag: debug}
+	cmdLineFlags := &Flags{inputFile: &inputFile, outputFile: outputFile, debugFlag: debug, fasmFile: fasmFile}
 	if *cmdLineFlags.debugFlag {
 		fmt.Printf("Compiling %s to %s with debug flag %v\n",
 			*cmdLineFlags.inputFile, *cmdLineFlags.outputFile, *cmdLineFlags.debugFlag,
@@ -47,7 +53,9 @@ func Run() {
 	toks := runLexicalAnalysis(cmdLineFlags)
 	program := runSyntaxAnalysis(cmdLineFlags, toks)
 	runSemanticAnalysis(cmdLineFlags, program)
-	runIRGeneration(cmdLineFlags, program)
+	irProgram := runIRGeneration(cmdLineFlags, program)
+	runCodeGeneration(cmdLineFlags, irProgram)
+	runExecutableGeneration(cmdLineFlags)
 }
 
 // runLexicalAnalysis runs the lexical analysis phase of the compiler pipeline
@@ -102,7 +110,7 @@ func runSemanticAnalysis(flags *Flags, program *ast.Program) {
 }
 
 // runIRGeneration runs the IR Generation phase of the compiler pipeline
-func runIRGeneration(flags *Flags, program *ast.Program) {
+func runIRGeneration(flags *Flags, program *ast.Program) *ir.IRProgram {
 	if *flags.debugFlag {
 		fmt.Println("=== IR Generation ===")
 	}
@@ -111,5 +119,38 @@ func runIRGeneration(flags *Flags, program *ast.Program) {
 	if *flags.debugFlag {
 		irGenerator.Print()
 		fmt.Println("IR generation successful...")
+	}
+	return irGenerator.IRProgram
+}
+
+// runCodeGeneration generates FASM code for the IR
+func runCodeGeneration(flags *Flags, program *ir.IRProgram) {
+	if *flags.debugFlag {
+		fmt.Println("=== Code Generation ===")
+	}
+	lnx64Generator := lnx64.NewGenerator()
+	program.Accept(lnx64Generator)
+	if *flags.debugFlag {
+		fmt.Println(lnx64Generator.Code)
+		fmt.Println("Code generation successful...")
+	}
+	err := os.WriteFile(*flags.fasmFile, []byte(lnx64Generator.Code), 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// runExecutableGeneration generates executable from the FASM code
+func runExecutableGeneration(flags *Flags) {
+	if *flags.debugFlag {
+		fmt.Println("=== Executable Generation ===")
+	}
+	cmd := exec.Command("fasm", *flags.fasmFile, *flags.outputFile)
+	err := cmd.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if *flags.debugFlag {
+		fmt.Println("Executable generation successful...")
 	}
 }
