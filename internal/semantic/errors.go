@@ -17,6 +17,6 @@ func (s *SemanticAnalyzer) PrintErrors() {
 		println(err)
 	}
 	if len(s.errors) > 0 {
-		log.Fatalln("Syntax analysis failed! Errors occurred while parsing!")
+		log.Fatalln("Semantic analysis failed! Errors occurred while parsing!")
 	}
 }

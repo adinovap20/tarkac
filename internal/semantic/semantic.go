@@ -9,13 +9,18 @@ import (
 
 // SemanticAnalyzer structure
 type SemanticAnalyzer struct {
-	errors   []string
-	lastType string
+	errors    []string
+	lastType  string
+	variables map[string]Type
 }
 
 // NewSemanticAnalyzer creates a new instance of SemanticAnalyzer structure
 func NewSemanticAnalyzer() *SemanticAnalyzer {
-	return &SemanticAnalyzer{}
+	return &SemanticAnalyzer{
+		errors:    []string{},
+		variables: map[string]Type{},
+		lastType:  "",
+	}
 }
 
 // VisitProgram analyzes the Program node
@@ -48,7 +53,14 @@ func (s *SemanticAnalyzer) VisitStmtExit(stmtExit *ast.StmtExit) {
 }
 
 // VisitStmtIntVarDecl analyzes the StmtIntVarDecl node
-func (s *SemanticAnalyzer) VisitStmtIntVarDecl(stmtIntVarDecl *ast.StmtIntVarDecl) {}
+func (s *SemanticAnalyzer) VisitStmtIntVarDecl(stmtIntVarDecl *ast.StmtIntVarDecl) {
+	if _, ok := s.variables[stmtIntVarDecl.Name]; ok {
+		err := "Variable " + stmtIntVarDecl.Name + " already declared"
+		s.newError(err, stmtIntVarDecl.Line, stmtIntVarDecl.Col)
+		return
+	}
+	s.variables[stmtIntVarDecl.Name] = TYPE_INT
+}
 
 // VisitExprIntLit analyzes the ExprIntLit node
 func (s *SemanticAnalyzer) VisitExprIntLit(exprIntLit *ast.ExprIntLit) {
