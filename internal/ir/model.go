@@ -1,7 +1,10 @@
 // Package ir contains functions and structures for IR
 package ir
 
-import "strconv"
+import (
+	"strconv"
+	"strings"
+)
 
 // IRInstruction interface for all the IR nodes
 type IRInstruction interface {
@@ -16,11 +19,11 @@ type IRProgram struct {
 
 // String prints the IR program
 func (p *IRProgram) String() string {
-	str := ""
+	var str strings.Builder
 	for _, inst := range p.Insts {
-		str += inst.String() + "\n"
+		str.WriteString(inst.String() + "\n")
 	}
-	return str
+	return str.String()
 }
 
 // Accept visits the IRProgram
@@ -28,19 +31,19 @@ func (p *IRProgram) Accept(v Visitor) {
 	v.VisitIRProgram(p)
 }
 
-// IRLoadInt structure holds the IR for `LOAD INT <int>` instruction
-type IRLoadInt struct {
+// IRPushInt structure holds the IR for `LOAD INT <int>` instruction
+type IRPushInt struct {
 	Val int // Val holds the integer value to be loaded
 }
 
 // String returns the string representation of IRLoadInt
-func (i *IRLoadInt) String() string {
-	return "LOAD INT " + strconv.Itoa(i.Val)
+func (i *IRPushInt) String() string {
+	return "PUSH INT " + strconv.Itoa(i.Val)
 }
 
 // Accept visits the IRLoadInt
-func (i *IRLoadInt) Accept(v Visitor) {
-	v.VisitIRLoadInt(i)
+func (i *IRPushInt) Accept(v Visitor) {
+	v.VisitIRPushInt(i)
 }
 
 // IRExit structure holds the IR for `EXIT` instruction
@@ -54,4 +57,19 @@ func (i *IRExit) String() string {
 // Accept visits the IRExit
 func (i *IRExit) Accept(v Visitor) {
 	v.VisitIRExit(i)
+}
+
+// IRStoreInt structure holds the IR for `STORE INT <identifier>`
+type IRStoreInt struct {
+	Name string // Name holds the identifier name
+}
+
+// String returns the string representation of IRStoreInt
+func (i *IRStoreInt) String() string {
+	return "STORE INT " + i.Name
+}
+
+// Accept visits the IRStoreInt
+func (i *IRStoreInt) Accept(v Visitor) {
+	v.VisitIRStoreInt(i)
 }

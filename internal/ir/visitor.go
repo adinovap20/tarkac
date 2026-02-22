@@ -3,6 +3,7 @@ package ir
 // Visitor interface for traversing the IR
 type Visitor interface {
 	VisitIRProgram(p *IRProgram)
-	VisitIRLoadInt(i *IRLoadInt)
+	VisitIRPushInt(i *IRPushInt)
 	VisitIRExit(i *IRExit)
+	VisitIRStoreInt(i *IRStoreInt)
 }

@@ -39,9 +39,14 @@ func (g *IRGenerator) VisitStmtExit(stmtExit *ast.StmtExit) {
 }
 
 // VisitStmtIntVarDecl visits the int variable declaration statement
-func (g *IRGenerator) VisitStmtIntVarDecl(stmtIntVarDecl *ast.StmtIntVarDecl) {}
+func (g *IRGenerator) VisitStmtIntVarDecl(stmtIntVarDecl *ast.StmtIntVarDecl) {
+	if stmtIntVarDecl.Expr != nil {
+		stmtIntVarDecl.Expr.Accept(g)
+	}
+	g.IRProgram.StoreInt(stmtIntVarDecl.Name)
+}
 
 // VisitExprIntLit visits the integer literal expression
 func (g *IRGenerator) VisitExprIntLit(exprIntLit *ast.ExprIntLit) {
-	g.IRProgram.LoadInt(exprIntLit.Val)
+	g.IRProgram.PushInt(exprIntLit.Val)
 }
