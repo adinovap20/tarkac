@@ -51,6 +51,14 @@ func (p *Parser) nextToken() {
 	p.curToken = p.tokens[p.curPos]
 }
 
+// peekToken returns the token after the peek th position from current token
+func (p *Parser) peekToken(peek int) *token.Token {
+	if p.curPos+peek >= p.tokensLen {
+		return nil
+	}
+	return &p.tokens[p.curPos+peek]
+}
+
 // expectAndConsume expects the token with the given token type at the current position.
 // If the expected token type and current token type does not match, it adds parser error in the errors slice.
 // This function also moves the pointer forward anyway.

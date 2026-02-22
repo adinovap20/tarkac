@@ -19,6 +19,11 @@ func TestParse(t *testing.T) {
 				&ast.StmtExit{Expr: &ast.ExprIntLit{Val: 20, Line: 2, Col: 6}, Line: 2, Col: 1},
 			},
 		}},
+		{"a: int = 10\n", ast.Program{
+			Stmts: []ast.Statement{
+				&ast.StmtIntVarDecl{Expr: &ast.ExprIntLit{Val: 10, Line: 1, Col: 10}, Line: 1, Col: 1},
+			},
+		}},
 	}
 	for _, tt := range tests {
 		lexer := lexer.NewLexer(tt.input)

@@ -1,7 +1,9 @@
 // Package astprinter visits the AST and prints it in a nice way.
 package astprinter
 
-import "github.com/adinovap20/tarkac/internal/ast"
+import (
+	"github.com/adinovap20/tarkac/internal/ast"
+)
 
 // ASTPrinter structure
 type ASTPrinter struct {
@@ -41,8 +43,25 @@ func (p *ASTPrinter) VisitStmtExit(stmtExit *ast.StmtExit) {
 	p.depth--
 }
 
+// VisitStmtIntVarDecl visits the StmtIntVarDecl node and prints it in a nice way
+func (p *ASTPrinter) VisitStmtIntVarDecl(stmtIntVarDecl *ast.StmtIntVarDecl) {
+	PrintIndentation(p.depth)
+	println("StmtIntVarDecl:")
+	p.depth++
+	PrintIndentation(p.depth)
+	println("Name:", stmtIntVarDecl.Name)
+	PrintIndentation(p.depth)
+	println("Type: Int")
+	if stmtIntVarDecl.Expr != nil {
+		stmtIntVarDecl.Expr.Accept(p)
+	} else {
+		PrintNilIndentation(p.depth)
+	}
+	p.depth--
+}
+
 // VisitExprIntLit visits the ExprIntLit node and prints it in a nice way
 func (p *ASTPrinter) VisitExprIntLit(exprIntLit *ast.ExprIntLit) {
 	PrintIndentation(p.depth)
-	println("ExprIntLit: ", exprIntLit.Val)
+	println("ExprIntLit:", exprIntLit.Val)
 }

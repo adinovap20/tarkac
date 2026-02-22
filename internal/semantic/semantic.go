@@ -47,6 +47,9 @@ func (s *SemanticAnalyzer) VisitStmtExit(stmtExit *ast.StmtExit) {
 	}
 }
 
+// VisitStmtIntVarDecl analyzes the StmtIntVarDecl node
+func (s *SemanticAnalyzer) VisitStmtIntVarDecl(stmtIntVarDecl *ast.StmtIntVarDecl) {}
+
 // VisitExprIntLit analyzes the ExprIntLit node
 func (s *SemanticAnalyzer) VisitExprIntLit(exprIntLit *ast.ExprIntLit) {
 	s.lastType = TYPE_INT

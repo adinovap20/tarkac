@@ -38,6 +38,9 @@ func (g *IRGenerator) VisitStmtExit(stmtExit *ast.StmtExit) {
 	g.IRProgram.Exit()
 }
 
+// VisitStmtIntVarDecl visits the int variable declaration statement
+func (g *IRGenerator) VisitStmtIntVarDecl(stmtIntVarDecl *ast.StmtIntVarDecl) {}
+
 // VisitExprIntLit visits the integer literal expression
 func (g *IRGenerator) VisitExprIntLit(exprIntLit *ast.ExprIntLit) {
 	g.IRProgram.LoadInt(exprIntLit.Val)

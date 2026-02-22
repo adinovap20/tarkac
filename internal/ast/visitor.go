@@ -4,5 +4,6 @@ package ast
 type Visitor interface {
 	VisitProgram(p *Program)
 	VisitStmtExit(s *StmtExit)
+	VisitStmtIntVarDecl(s *StmtIntVarDecl)
 	VisitExprIntLit(e *ExprIntLit)
 }
