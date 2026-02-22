@@ -53,6 +53,16 @@ func (l *Lexer) GetTokens() []token.Token {
 			tokens = append(tokens, tok)
 			continue
 		}
+		if l.curChar == '=' {
+			tok := l.readAssignment()
+			tokens = append(tokens, tok)
+			continue
+		}
+		if l.curChar == ':' {
+			tok := l.readColon()
+			tokens = append(tokens, tok)
+			continue
+		}
 		tok := l.readUnknown()
 		tokens = append(tokens, tok)
 	}
@@ -95,6 +105,20 @@ func (l *Lexer) readNumber() token.Token {
 	}
 	lit := l.code[beg:l.curPos]
 	tok := token.Token{Type: token.LIT_INT, Lit: lit, Line: line, Col: col}
+	return tok
+}
+
+// readAssignment reads the assignment operator and returns the corresponding token
+func (l *Lexer) readAssignment() token.Token {
+	tok := token.Token{Type: token.OP_ASSIGN, Lit: "=", Line: l.line, Col: l.col}
+	l.readChar()
+	return tok
+}
+
+// readColon reads the colon and returns the corresponding token
+func (l *Lexer) readColon() token.Token {
+	tok := token.Token{Type: token.PUNC_COLON, Lit: ":", Line: l.line, Col: l.col}
+	l.readChar()
 	return tok
 }
 

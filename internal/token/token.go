@@ -11,9 +11,14 @@ type TokenType string
 
 const (
 	KW_EXIT = "KW_EXIT" // KW_EXIT is token type for the 'exit' keyword
+	KW_INT  = "KW_INT"  // KW_INT is token type for the 'int' keyword
 
 	LIT_INT   = "LIT_INT"   // LIT_INT is token type for the integer literal, e.g., 10, 302, etc.
 	LIT_IDENT = "LIT_IDENT" // LIT_IDENT is token type for the identifier literal, e.g., a, b, etc.
+
+	OP_ASSIGN = "OP_ASSIGN" // OP_ASSIGN is token type for '='
+
+	PUNC_COLON = "PUNC_COLON" // PUNC_COLON is token type for ':'
 
 	EX_UNKNOWN = "EX_UNKNOWN" // EX_UNKNOWN is the token type for unknown token
 	EX_NEWLINE = "EX_NEWLINE" // EX_NEWLINE is the token type for newline token
@@ -30,6 +35,7 @@ type Token struct {
 // KEYWORDS map stores keyword literals and their corresponding keyword token type
 var KEYWORDS = map[string]TokenType{
 	"exit": KW_EXIT,
+	"int":  KW_INT,
 }
 
 // LookupIdent looks up identifier in the KEYWORDS map and return the corresponding token type.

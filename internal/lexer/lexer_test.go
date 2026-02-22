@@ -19,6 +19,14 @@ func TestLexer(t *testing.T) {
 			{Type: token.EX_NEWLINE, Lit: "\n", Line: 1, Col: 8},
 			{Type: token.LIT_IDENT, Lit: "hello", Line: 2, Col: 1},
 		}},
+		{"a: int = 10\n", []token.Token{
+			{Type: token.LIT_IDENT, Lit: "a", Line: 1, Col: 1},
+			{Type: token.PUNC_COLON, Lit: ":", Line: 1, Col: 2},
+			{Type: token.KW_INT, Lit: "int", Line: 1, Col: 4},
+			{Type: token.OP_ASSIGN, Lit: "=", Line: 1, Col: 8},
+			{Type: token.LIT_INT, Lit: "10", Line: 1, Col: 10},
+			{Type: token.EX_NEWLINE, Lit: "\n", Line: 1, Col: 12},
+		}},
 	}
 	for _, tt := range tests {
 		lexer := NewLexer(tt.input)
